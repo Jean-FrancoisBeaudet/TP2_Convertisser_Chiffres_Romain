@@ -30,18 +30,18 @@ public class RomanNumberConverter {
 
     private static String convertPower(int value, char unit, char half, char nextPower){
         StringBuilder RomanPartialNumber = new StringBuilder();
-        if(value >= 1 && value <= 3){
+        if(value >= 1 && value <= 3) {
             RomanPartialNumber.append(addLetters(value, unit));
         }
-        if(value == 4){
+        if(value == 4) {
             RomanPartialNumber.append(unit);
             RomanPartialNumber.append(half);
         }
-        if(value >= 5 && value <= 8){
+        if(value >= 5 && value <= 8) {
             RomanPartialNumber.append(half);
             RomanPartialNumber.append(addLetters(value - 5, unit));
         }
-        if(value == 9){
+        if(value == 9) {
             RomanPartialNumber.append(unit);
             RomanPartialNumber.append(nextPower);
         }

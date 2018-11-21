@@ -3,7 +3,11 @@ package ca.csf.pobj.tp2.RomanNumberConverter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,7 +19,7 @@ public class RomanNumberConverterActivity extends AppCompatActivity {
 
     private View rootView;
     private EditText inputEditText;
-    private TextView convertedNumber;
+    private TextView outputEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,28 +28,42 @@ public class RomanNumberConverterActivity extends AppCompatActivity {
 
         rootView = findViewById(R.id.rootView);
         inputEditText = findViewById(R.id.inputEditText);
-        convertedNumber = findViewById(R.id.convertedNumber);
+        outputEditText = findViewById(R.id.convertedNumber);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("outputEditText", this.outputEditText.getText().toString());
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.outputEditText.setText(savedInstanceState.getString("outputEditText"));
     }
 
     public void onToRomanNumberClick(View view){
         if(this.isValidInput()) {
             String input = this.inputEditText.getText().toString();
             int number = NumberUtils.toInt(input);
-            convertedNumber.setText(RomanNumberConverter.convert(number));
+            outputEditText.setText(RomanNumberConverter.convert(number));
         }
+        this.hideKeyboard();
     }
 
     private boolean isValidInput(){
         if(this.isInputBlank()){
-            Snackbar errorMessage = Snackbar.make(findViewById(R.id.rootView), R.string.blankStringError, Snackbar.LENGTH_LONG);
+            this.showErrorMessage(R.string.blankStringError);
             return false;
         }
-        if(this.isInputInt()){
-            Snackbar errorMessage = Snackbar.make(findViewById(R.id.rootView), R.string.blankStringError, Snackbar.LENGTH_LONG);
+        if(!this.isInputInt()){
+            this.showErrorMessage(R.string.stringNotValid);
             return false;
         }
-        if(this.isInputRangeValid()){
-            Snackbar errorMessage = Snackbar.make(findViewById(R.id.rootView), R.string.blankStringError, Snackbar.LENGTH_LONG);
+        int value = NumberUtils.toInt(this.inputEditText.getText().toString());
+        if(!this.isInputRangeValid(value)){
+            this.showErrorMessage(R.string.intOutOfRange);
             return false;
         }
         return true;
@@ -56,10 +74,21 @@ public class RomanNumberConverterActivity extends AppCompatActivity {
     }
 
     private boolean isInputInt(){
-        return NumberUtils.toInt(this.inputEditText.getText().toString());
+        return NumberUtils.isInputInt(this.inputEditText.getText().toString());
     }
 
-    private boolean isInputRangeValid(int inputAsInt){
+    private boolean isInputRangeValid(int inputAsInt) {
         return inputAsInt > 0 && inputAsInt < 5000;
+    }
+
+    private void showErrorMessage(int errorMessage) {
+        Snackbar.make(findViewById(R.id.rootView), errorMessage, Snackbar.LENGTH_LONG).show();
+        this.outputEditText.setText("");
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager manager = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

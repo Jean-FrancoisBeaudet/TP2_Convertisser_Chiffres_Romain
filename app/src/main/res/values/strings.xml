@@ -3,4 +3,6 @@
     <string name="hint_input">Saisir un nombre entre 1 et 4999</string>
     <string name="toRomanNumber">EN CHIFFRE ROMAIN</string>
     <string name="blankStringError">La saisie est vide</string>
+    <string name="stringNotValid">Ceci nest pas un nombre</string>
+    <string name="intOutOfRange">Le nombre doit être compris entre 1 et 4999</string>
 </resources>
