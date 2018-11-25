@@ -33,6 +33,7 @@ public class RomanNumberConverterActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        //BEN_CORRECTION : Chaine de caractères devrait être une constante.
         savedInstanceState.putString("outputEditText", this.outputEditText.getText().toString());
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -40,6 +41,7 @@ public class RomanNumberConverterActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        //BEN_CORRECTION : Chaine de caractères devrait être une constante.
         this.outputEditText.setText(savedInstanceState.getString("outputEditText"));
     }
 

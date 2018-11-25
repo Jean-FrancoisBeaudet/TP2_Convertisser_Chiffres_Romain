@@ -57,7 +57,7 @@ public class RomanNumberConverter {
     }
 
     private static void assertPreCondition(int value) throws IllegalArgumentException {
-        if (value <= 0 || value >= 5000) {
+        if (value <= 0 || value >= 5000) { //BEN_CORRECTION : Valeurs 0 et 5000 devrait être des constantes.
             throw new IllegalArgumentException("The number must be a positive integer between 1 and 4999 inclusive!");
         }
     }
